@@ -1,0 +1,130 @@
+
+day 1 of parallel C++:
+======================			
+
+C/C++ (Phase II)
+----------------
+
+			program
+			|
+			|---> pre-processing
+			|
+			V
+			Source
+		    /   |
+	       assembly |---> compilation (declarations)
+		    \   |
+			V
+			Object file
+			|
+			|---> linking (definitions)
+			|
+			V
+			Executable
+
+
+	int x; 		// declaration
+	int x = 100;	// definition
+
+	// when you use extern keyword, its declaration only:
+	extern int x;	// declaration only
+
+	// This is because, compiler has something called:
+	// ODR = One Definition Rule.
+
+
+What is pre-processing?
+	
+	instructions to pre-processor
+		OR
+	preprocessor directives
+
+	in C/C++ any statements starting with "#" is a preprocessor directive.
+	in line: "#include <stdio.h>",
+	include is the directive and stdio.h is the argument.
+
+	what "include" does is include the contents of header file into our current program.
+	please note that <> is for system headers and "" is for user defined headers.
+
+	Other pre-processor directives:
+	
+	#define
+	#ifndef
+
+
+
+
+for only seeing compilation errors, using "-c" option while compiling:
+gcc program2Main.c -c
+
+This helps you avoid viewing the linker errors, only compilation errors are displayed.
+This also creates an object file. Using these object files you can also create executable files.
+
+
+Similarly we can use options like:
+
+"-E" for pre-processing only
+"-S" for generating assembly code.
+
+
+For now we can do this to generate an object file:
+gcc program2Main.c -c
+
+and this to generate executable file from object file:
+gcc -o myout program2Main.o programTwo.c
+
+
+for analyzing object/executable files, use these commands and options:
+use:
+->od			// octal dump
+see:
+https://man7.org/linux/man-pages/man1/od.1.html
+
+->hexdump		// hexadecimal dump
+see: 
+https://en.wikipedia.org/wiki/Hex_dump
+https://man7.org/linux/man-pages/man1/hexdump.1.html
+
+->xxd			
+see:
+https://linux.die.net/man/1/xxd
+ 
+->objdump		// object dump
+see:
+https://man7.org/linux/man-pages/man1/objdump.1.html
+
+
+================================================================
+
+Detailed discussion on how we can shift declarations into header files.
+and also we can shift function definitions into other files and
+main function in a separate file.
+Later, when we compile, we mention all files and they are linked together using linker.
+
+================================================================
+
+In C++,
+even in case of classes, 
+we can separate declaration, usage and definitions into separate files.
+i.e.: 
+preprocessors and all class member declarations in a header file.
+main function in other file.
+class member definitions (using scope resolution operator) in other file.
+
+In C++ terminology:
+declaration = abstraction
+definition = usage
+
+see folder withClass for more details.
+
+compile the main file to create an object file using:
+g++ Main.cpp -c
+
+then create an executable using:
+g++ -o exec Main.o encapsulation.cpp
+
+================================================================
+
+
+
+
