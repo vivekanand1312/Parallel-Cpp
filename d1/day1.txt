@@ -202,18 +202,104 @@ The general folder structure of a cpp project is as follows:
 
 ================================================================
 
+What are shared object (.so) and dynamic link library (.dll)?
+-------------------------------------------------------------
+
+Linux					Windows
+
+name.a (archive)			name.lib (static library)
+
+name.so (shared object)			name.dll (dynamic link library)
 
 
 
+during linking we can give,
+.c, .o, .a and .so files and compiler will accept.
+
+In windows, you may have heard of .dll file error.
+That means this file is needed everytime you run a specific program.
+its a dynamic link library.
+similarly in linux, you need .so which is a shared object file.
+
+so whats the different about .dll and a regular definition files.
+when you use nm command all names of identifiers are shown.
+in dynamic link library everything will be separate, 
+function name will be separate and sometimes you will see undefined.
+
+when you do,
+$nm filename.c
+you can see some functions have an address and some functions like
+printf that come from glib which stands for gnu library and its address is not given.
+
+ldd ./executable
+you will see which functions are loaded from which library and its address.
+here, ld is our linker and loader
+
+=============================================
 
 
+creating .so files in linux is simple.
+
+here's a STEP BY STEP guide:
 
 
+1. 
+simple do this for all files with definitions:
+$gcc -c -fPIC filename.c
+
+here -fPIC stands for: 
+add functionality of Position Independent Code.
+In Microsoft Windows they call it as "Relocatable Address".
 
 
+2. 
+to create a .so file:
+$gcc -shared -o libMine.so *.o
+
+to see more info on that file:
+$file libMine.so
+
+you can see that that file is a shared object file.
+now you can remove all object files from that directory by running:
+$rm *.o
+
+3. 
+now you can create an executable by running:
+$gcc -o myout testMain.c -L. -lMine
+
+note that -L. is for specifying additional linking directory
 
 
+you will see that shared object is not loaded by running:
+$ldd myout
 
+4. 
+then run this:
+$export LD_RUN_PATH=./
+LD_RUN_PATH specifies the directories that are to be searched for libraries at both link and run time.
 
+5. 
+and again run this:
+$gcc -o myout testMain.c -L. -lMine
+this time if you run 
+$ldd myout
+you will find that object is loaded (and its address is visible) and ready to execute.
+and then run the executable:
+$./myout
+
+notice that we used the option: 
+-L.
+that means we want to get our shared object from current directory
+then we used option:
+-lMine
+here, name of library is libMine, as we can see it is convention,
+for libraries to have "lib" as prefix,
+the real name of library is "Mine"
+that is what we specified in that option "-lMine",
+generally you will use option like: "-lFilename" 
+
+======================================================================
+
+In next session, we will learn how to automate all this instead of doing it manually.
 
 
